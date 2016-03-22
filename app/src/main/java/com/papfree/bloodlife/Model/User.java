@@ -1,4 +1,4 @@
-package com.papfree.bloodlife;
+package com.papfree.bloodlife.Model;
 
 public class User {
 

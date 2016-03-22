@@ -1,4 +1,4 @@
-package com.papfree.bloodlife;
+package com.papfree.bloodlife.UI.Login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,17 +11,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.papfree.bloodlife.R;
+import com.papfree.bloodlife.Model.User;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class OrgSignupActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
-    private static final int REQUEST_LOGIN = 0;
+    private static final int REQUEST_ORG_SIGNUP = 0;
 
     @Bind(R.id.input_name)
     EditText _nameText;
-    @Bind(R.id.input_orgname)
-    EditText _OrgText;
+    @Bind(R.id.input_age)
+    EditText _ageText;
     @Bind(R.id.input_email)
     EditText _emailText;
     @Bind(R.id.input_password)
@@ -32,12 +35,13 @@ public class OrgSignupActivity extends AppCompatActivity {
     Button _signupButton;
     @Bind(R.id.link_login)
     TextView _loginLink;
-
-
+    @Bind(R.id.link_orgSignup)
+    TextView _orgSignup;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_orgsignup);
+        setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
@@ -50,8 +54,17 @@ public class OrgSignupActivity extends AppCompatActivity {
         _loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivityForResult(intent, REQUEST_LOGIN);
+                // Finish the registration screen and return to the Login activity
+                finish();
+            }
+        });
+
+        _orgSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start the Signup activity
+                Intent intent = new Intent(getApplicationContext(), OrgSignupActivity.class);
+                startActivityForResult(intent, REQUEST_ORG_SIGNUP);
             }
         });
     }
@@ -66,19 +79,22 @@ public class OrgSignupActivity extends AppCompatActivity {
 
         _signupButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(OrgSignupActivity.this,
+        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
         String name = _nameText.getText().toString();
-        String orgName = _OrgText.getText().toString();
+        int age = Integer.parseInt(_ageText.getText().toString());
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
 
+        User user = new User(name,age, email,password);
+
+        //registeredUser(user);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -109,6 +125,7 @@ public class OrgSignupActivity extends AppCompatActivity {
         boolean valid = true;
 
         String name = _nameText.getText().toString();
+        String age = _ageText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String confirmPassword = _confirmPasswordText.getText().toString();
@@ -119,6 +136,12 @@ public class OrgSignupActivity extends AppCompatActivity {
         } else {
             _nameText.setError(null);
         }
+        if(isInteger(age)){
+            _ageText.setError(null);
+        }else{
+            _ageText.setError("Enter Valid Number");
+        }
+
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
@@ -134,7 +157,7 @@ public class OrgSignupActivity extends AppCompatActivity {
             _passwordText.setError(null);
         }
 
-        if (confirmPassword.isEmpty() || confirmPassword != password) {
+        if (confirmPassword.isEmpty() || !(confirmPassword.equals(password))) {
             _confirmPasswordText.setError("Password did not match");
             valid = false;
         } else {
@@ -142,5 +165,27 @@ public class OrgSignupActivity extends AppCompatActivity {
         }
 
         return valid;
+    }
+
+   /* private void registeredUser(User user){
+        ServerRequests serverRequests =new ServerRequests(this);
+        serverRequests.storeUserDataInBackground(user, new GetUserCallBack() {
+            @Override
+            public void done(User returnedUser) {
+                startActivity(new Intent(SignupActivity.this, com.papfree.bloodlife.Login.LoginActivity.class));
+            }
+        });
+    }*/
+
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch(NumberFormatException e) {
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
     }
 }

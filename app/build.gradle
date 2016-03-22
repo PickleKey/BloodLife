@@ -17,6 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 dependencies {
@@ -25,4 +31,11 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.+'
     compile 'com.android.support:design:22.2.+'
     compile 'com.jakewharton:butterknife:7.0.1'
+
+    compile 'com.firebase:firebase-client-android:2.4.0'
+    compile 'com.firebaseui:firebase-ui:0.2.2'
+
+    /* For Google Play Services */
+    compile 'com.google.android.gms:play-services-safetynet:8.3.0'
+    compile 'com.google.android.gms:play-services-auth:8.3.0'
 }

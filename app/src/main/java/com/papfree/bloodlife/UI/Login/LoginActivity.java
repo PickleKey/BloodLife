@@ -1,6 +1,7 @@
-package com.papfree.bloodlife;
+package com.papfree.bloodlife.UI.Login;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,14 +12,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.papfree.bloodlife.UI.MainActivity;
+import com.papfree.bloodlife.R;
+import com.papfree.bloodlife.Model.User;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private ProgressDialog mAuthProgressDialog;
 
-    UserLocalStore userLocalStore;
 
     @Bind(R.id.input_email)
     EditText _emailText;
@@ -28,13 +33,13 @@ public class LoginActivity extends AppCompatActivity {
     Button _loginButton;
     @Bind(R.id.link_signup)
     TextView _signupLink;
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        
+
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -145,18 +150,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void authenticate(User user){
 
-        ServerRequests serverRequests = new ServerRequests(this);
-        serverRequests.fetchUserDataInBackground(user, new GetUserCallBack() {
-            @Override
-            public void done(User returnedUser) {
-                if(returnedUser == null){
-                    showErrorMessage();
-                }else {
-                    logUserIn(returnedUser);
 
-                }
-            }
-        });
     }
 
     private void showErrorMessage(){
@@ -170,8 +164,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void logUserIn(User returnedUser){
 
-        userLocalStore.storeUserData(returnedUser);
-        userLocalStore.setUserLoggedIn(true);
+
 
         startActivity(new Intent(this, MainActivity.class));
 
