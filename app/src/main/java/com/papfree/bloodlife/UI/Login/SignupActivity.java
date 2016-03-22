@@ -13,11 +13,12 @@ import android.widget.Toast;
 
 import com.papfree.bloodlife.R;
 import com.papfree.bloodlife.Model.User;
+import com.papfree.bloodlife.UI.BaseActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends BaseActivity {
     private static final String TAG = "SignupActivity";
     private static final int REQUEST_ORG_SIGNUP = 0;
 

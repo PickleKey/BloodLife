@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.papfree.bloodlife.UI.BaseActivity;
 import com.papfree.bloodlife.UI.MainActivity;
 import com.papfree.bloodlife.R;
 import com.papfree.bloodlife.Model.User;
@@ -19,7 +19,7 @@ import com.papfree.bloodlife.Model.User;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private ProgressDialog mAuthProgressDialog;
@@ -70,11 +70,11 @@ public class LoginActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        /*final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
-        progressDialog.show();*/
+        progressDialog.show();
 
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
