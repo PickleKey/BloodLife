@@ -21,4 +21,12 @@ public class Utils {
         mContext = con;
     }
 
+    public static String encodeEmail(String userEmail) {
+        return userEmail.replace(".", ",");
+    }
+
+    public static String decodeEmail(String userEmail) {
+        return userEmail.replace(",", ".");
+    }
+
 }

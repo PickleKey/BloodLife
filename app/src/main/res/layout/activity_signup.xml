@@ -6,6 +6,7 @@
     android:fitsSystemWindows="true">
 
     <LinearLayout
+        android:id="@+id/linear_layout_create_account_activity"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,10 +24,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:onClick="onOrgSignUpPressed"
             android:text="Organization? Create One"
             android:gravity="center"
             android:textSize="16dip"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/yellow"/>
 
         <!-- Name Label -->
         <android.support.design.widget.TextInputLayout
@@ -50,7 +53,7 @@
             <EditText android:id="@+id/input_age"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapWords"
+                android:inputType="number"
                 android:hint="Age" />
         </android.support.design.widget.TextInputLayout>
 
@@ -68,7 +71,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->
-        <android.support.design.widget.TextInputLayout
+        <!--<android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -78,10 +81,10 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="Password"/>
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout>-->
 
         <!-- Confirm Password Label -->
-        <android.support.design.widget.TextInputLayout
+        <!--<android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -91,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="Confirm Password"/>
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout>-->
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
@@ -101,12 +104,14 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
+            android:onClick="onCreateAccountPressed"
             android:text="@string/title_activity_create_account"/>
 
         <TextView android:id="@+id/link_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:onClick="onSignInPressed"
             android:text="Already a member? Login"
             android:gravity="center"
             android:textSize="16dip"/>
