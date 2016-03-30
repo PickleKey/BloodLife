@@ -206,6 +206,13 @@ public class LoginActivity extends BaseActivity {
             return;
         }
         mAuthProgressDialog.show();
+        //TODO remove this line later.used for testing for now.
+        /* Go to main activity */
+        /*Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();*/
+        //TODO uncomment this for validating with firebase.
         mFirebaseRef.authWithPassword(email, password, new MyAuthResultHandler(Constants.PASSWORD_PROVIDER));
     }
 
@@ -232,13 +239,13 @@ public class LoginActivity extends BaseActivity {
 
             if (authData != null) {
                 /**
-                 * If user has logged in with Google provider
+                 * If user has logged in with Password provider
                  */
                 if (authData.getProvider().equals(Constants.PASSWORD_PROVIDER)) {
                     setAuthenticatedUserPasswordProvider(authData);
                 } else
                 /**
-                 * If user has logged in with Password provider
+                 * If user has logged in with Google provider
                  */
                     if (authData.getProvider().equals(Constants.GOOGLE_PROVIDER)) {
                         setAuthenticatedUserGoogle(authData);
@@ -249,6 +256,7 @@ public class LoginActivity extends BaseActivity {
                 /* Save provider name and encodedEmail for later use and start MainActivity */
                 mSharedPrefEditor.putString(Constants.KEY_PROVIDER, authData.getProvider()).apply();
                 mSharedPrefEditor.putString(Constants.KEY_ENCODED_EMAIL, mEncodedEmail).apply();
+                mSharedPrefEditor.putString(Constants.PASSWORD_PROVIDER,mEditTextPasswordInput.getText().toString()).apply();
 
                 /* Go to main activity */
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -299,52 +307,71 @@ public class LoginActivity extends BaseActivity {
         mEncodedEmail = Utils.encodeEmail(unprocessedEmail);
 
         final Firebase userRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
+        final Firebase orgRef = new Firebase(Constants.FIREBASE_URL_ORGS).child(mEncodedEmail);
 
-        /**
-         * Check if current user has logged in at least once
-         */
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+        if(orgRef != null){
+            orgRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
 
-                if (user != null) {
-
-                    /**
-                     * If recently registered user has hasLoggedInWithPassword = "false"
-                     * (never logged in using password provider)
-                     */
-                    if (!user.isHasLoggedInWithPassword()) {
+                    if (user != null) {
 
                         /**
-                         * Change password if user that just signed in signed up recently
-                         * to make sure that user will be able to use temporary password
-                         * from the email more than 24 hours
+                         * If recently registered user has hasLoggedInWithPassword = "false"
+                         * (never logged in using password provider)
                          */
-                        mFirebaseRef.changePassword(unprocessedEmail, mEditTextPasswordInput.getText().toString(), mEditTextPasswordInput.getText().toString(), new Firebase.ResultHandler() {
-                            @Override
-                            public void onSuccess() {
-                                userRef.child(Constants.FIREBASE_PROPERTY_USER_HAS_LOGGED_IN_WITH_PASSWORD).setValue(true);
-                                        /* The password was changed */
-                                Log.d(LOG_TAG, getString(R.string.log_message_password_changed_successfully) + mEditTextPasswordInput.getText().toString());
-                            }
+                        if (!user.isHasLoggedInWithPassword()) {
 
-                            @Override
-                            public void onError(FirebaseError firebaseError) {
-                                Log.d(LOG_TAG, getString(R.string.log_error_failed_to_change_password) + firebaseError);
-                            }
-                        });
+                            Intent intent = new Intent(LoginActivity.this, ChangePasswordActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.e(LOG_TAG,
-                        getString(R.string.log_error_the_read_failed) +
-                                firebaseError.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    Log.e(LOG_TAG,
+                            getString(R.string.log_error_the_read_failed) +
+                                    firebaseError.getMessage());
+                }
+            });
+        }else {
+
+            /**
+             * Check if current user has logged in at least once
+             */
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+
+                    if (user != null) {
+
+                        /**
+                         * If recently registered user has hasLoggedInWithPassword = "false"
+                         * (never logged in using password provider)
+                         */
+                        if (!user.isHasLoggedInWithPassword()) {
+
+                            Intent intent = new Intent(LoginActivity.this, ChangePasswordActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    Log.e(LOG_TAG,
+                            getString(R.string.log_error_the_read_failed) +
+                                    firebaseError.getMessage());
+                }
+            });
+        }
 
     }
 

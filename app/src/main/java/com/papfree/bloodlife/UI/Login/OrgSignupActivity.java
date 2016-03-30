@@ -160,14 +160,19 @@ public class OrgSignupActivity extends BaseActivity {
                          *  Password reset email sent, open app chooser to pick app
                          *  for handling inbox email intent
                          */
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        /*Intent intent = new Intent(Intent.ACTION_MAIN);
                         intent.addCategory(Intent.CATEGORY_APP_EMAIL);
                         try {
                             startActivity(intent);
                             finish();
                         } catch (android.content.ActivityNotFoundException ex) {
-                            /* User does not have any app to handle email */
-                        }
+                            *//* User does not have any app to handle email *//*
+                        }*/
+
+                        Intent intent = new Intent(OrgSignupActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
                     }
 
                     @Override

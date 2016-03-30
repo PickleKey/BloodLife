@@ -47,6 +47,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.papfree.bloodlife.UI.Login.LoginActivity" />
         </activity>
+        <activity android:name=".UI.Login.ChangePasswordActivity" android:theme="@style/AppTheme.Dark">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.papfree.bloodlife.UI.Login.LoginActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -31,7 +31,7 @@ import com.papfree.bloodlife.R;
  */
 public abstract class BaseActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
-    protected String mProvider, mEncodedEmail;
+    protected String mProvider, mEncodedEmail, mPassword;
     protected Firebase.AuthStateListener mAuthListener;
     protected Firebase mFirebaseRef;
 
@@ -57,8 +57,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(BaseActivity.this);
                 /* Get mEncodedEmail and mProvider from SharedPreferences, use null as default value */
-                        mEncodedEmail = sp.getString(Constants.KEY_ENCODED_EMAIL, null);
-                mProvider = sp.getString(Constants.KEY_PROVIDER, null);
+        mEncodedEmail = sp.getString(Constants.KEY_ENCODED_EMAIL, null);
+        mPassword = sp.getString(Constants.PASSWORD_PROVIDER, null);
+        mProvider = sp.getString(Constants.KEY_PROVIDER, null);
 
         if (!((this instanceof LoginActivity) || (this instanceof SignupActivity) || (this instanceof OrgSignupActivity))) {
             mFirebaseRef = new Firebase(Constants.FIREBASE_URL);

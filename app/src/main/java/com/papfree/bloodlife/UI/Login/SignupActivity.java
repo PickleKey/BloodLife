@@ -73,7 +73,6 @@ public class SignupActivity extends BaseActivity {
         mEditTextUsernameCreate = (EditText) findViewById(R.id.input_name);
         mEditTextEmailCreate = (EditText) findViewById(R.id.input_email);
         mEditTextAgeCreate = (EditText) findViewById(R.id.input_age);
-        //mEditTextPasswordCreate = (EditText) findViewById(R.id.edit_text_password_create);
         LinearLayout linearLayoutCreateAccountActivity = (LinearLayout) findViewById(R.id.linear_layout_create_account_activity);
         initializeBackground(linearLayoutCreateAccountActivity);
 
@@ -162,14 +161,20 @@ public class SignupActivity extends BaseActivity {
                          *  Password reset email sent, open app chooser to pick app
                          *  for handling inbox email intent
                          */
-                        /*Intent intent = new Intent(Intent.ACTION_MAIN);
+                       /* Intent intent = new Intent(Intent.ACTION_MAIN);
                         intent.addCategory(Intent.CATEGORY_APP_EMAIL);
                         try {
                             startActivity(intent);
                             finish();
                         } catch (android.content.ActivityNotFoundException ex) {
-                            *//* User does not have any app to handle email *//*
+                             *//*User does not have any app to handle email*//*
                         }*/
+
+                        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+
                     }
 
                     @Override
@@ -185,11 +190,11 @@ public class SignupActivity extends BaseActivity {
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                                                /* Error occurred, log the error and dismiss the progress dialog */
+                /* Error occurred, log the error and dismiss the progress dialog */
                 Log.d(LOG_TAG, getString(R.string.log_error_occurred) +
                         firebaseError);
                 mAuthProgressDialog.dismiss();
-                                                /* Display the appropriate error message */
+                /* Display the appropriate error message */
                 if (firebaseError.getCode() == FirebaseError.EMAIL_TAKEN) {
                     mEditTextEmailCreate.setError(getString(R.string.error_email_taken));
                 } else {

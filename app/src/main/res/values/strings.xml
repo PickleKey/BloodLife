@@ -15,6 +15,7 @@
     <!-- Instructions and Loading Text -->
     <string name="progress_dialog_loading">Loading…</string>
     <string name="progress_dialog_authenticating_with_firebase">Authenticating with Firebase…</string>
+    <string name="progress_dialog_changePassword_with_firebase">Changing Password in Firebase…</string>
     <string name="progress_dialog_check_inbox">Please check your inbox for your password</string>
 
     <!--Errors -->
@@ -26,6 +27,7 @@
     <string name="log_error_failed_to_change_password">"Failed to change the password: "</string>
     <string name="error_email_taken">The email is already taken.</string>
     <string name="error_invalid_email_not_valid">%s is not a valid email</string>
+    <string name="error_password_did_not_match">Password did not match</string>
 
     <!-- Log Messages -->
     <string name="log_message_password_changed_successfully">Password changed successfully from temporary password to </string>
