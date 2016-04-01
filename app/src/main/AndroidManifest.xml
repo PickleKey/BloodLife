@@ -2,23 +2,56 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.papfree.bloodlife">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
     <application
+        android:name="com.papfree.bloodlife.BloodLifeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.papfree.bloodlife.MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".UI.MainActivity"
+            android:theme="@style/AppTheme.Dark"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.papfree.bloodlife.UI.MainActivity" />
 
+        </activity>
+
+        <activity android:name="com.papfree.bloodlife.UI.Login.LoginActivity" android:theme="@style/AppTheme.Dark">
+
+
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name="com.papfree.bloodlife.LoginActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name="com.papfree.bloodlife.SignupActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name="com.papfree.bloodlife.OrgSignupActivity" android:theme="@style/AppTheme.Dark" />
+
+        <activity
+            android:name=".UI.Login.SignupActivity"
+            android:theme="@style/AppTheme.Dark"
+            android:label="@string/title_activity_create_account"
+            android:parentActivityName="com.papfree.bloodlife.UI.Login.LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.papfree.bloodlife.UI.Login.LoginActivity" />
+        </activity>
+        <activity android:name=".UI.Login.OrgSignupActivity" android:theme="@style/AppTheme.Dark">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.papfree.bloodlife.UI.Login.LoginActivity" />
+        </activity>
+        <activity android:name=".UI.Login.ChangePasswordActivity" android:theme="@style/AppTheme.Dark">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.papfree.bloodlife.UI.Login.LoginActivity" />
+        </activity>
     </application>
 
 </manifest>
