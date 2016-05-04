@@ -14,8 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.papfree.bloodlife.Model.User;
 import com.papfree.bloodlife.UI.BaseActivity;
 import com.papfree.bloodlife.R;
 import com.papfree.bloodlife.UI.MainActivity;
@@ -111,71 +114,84 @@ public class ChangePasswordActivity extends BaseActivity {
         startActivity(intent);
         finish();*/
         final String unprocessedEmail = mFirebaseRef.getAuth().getProviderData().get(Constants.FIREBASE_PROPERTY_EMAIL).toString().toLowerCase();
-        String oldPassword = mSharedPref.getString(Constants.PASSWORD_PROVIDER, mPassword);
+        final String oldPassword = mSharedPref.getString(Constants.PASSWORD_PROVIDER, mPassword);
         //TODO uncomment this for validating with firebase.
         final Firebase userRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
         final Firebase orgRef = new Firebase(Constants.FIREBASE_URL_ORGS).child(mEncodedEmail);
 
-        if(orgRef != null){
-            mFirebaseRef.changePassword(unprocessedEmail,oldPassword, newPassword, new Firebase.ResultHandler() {
-                @Override
-                public void onSuccess() {
-                    orgRef.child(Constants.FIREBASE_PROPERTY_USER_HAS_LOGGED_IN_WITH_PASSWORD).setValue(true);
+        orgRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+
+                if (user != null) {
+                    mFirebaseRef.changePassword(unprocessedEmail, oldPassword, newPassword, new Firebase.ResultHandler() {
+                        @Override
+                        public void onSuccess() {
+                            orgRef.child(Constants.FIREBASE_PROPERTY_USER_HAS_LOGGED_IN_WITH_PASSWORD).setValue(true);
                                         /* The password was changed */
-                    Log.d(LOG_TAG, getString(R.string.log_message_password_changed_successfully)+ ":" + newPassword);
+                            Log.d(LOG_TAG, getString(R.string.log_message_password_changed_successfully) + ":" + newPassword);
 
                         /* Go to main activity */
-                    Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                }
+                            Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
 
-                @Override
-                public void onError(FirebaseError firebaseError) {
-                    Log.d(LOG_TAG, getString(R.string.log_error_failed_to_change_password) + firebaseError);
-                    mAuthProgressDialog.dismiss();
-                    showErrorToast(firebaseError.getMessage());
+                        @Override
+                        public void onError(FirebaseError firebaseError) {
+                            Log.d(LOG_TAG, getString(R.string.log_error_failed_to_change_password) + firebaseError);
+                            mAuthProgressDialog.dismiss();
+                            showErrorToast(firebaseError.getMessage());
 
                         /* Go to Login activity */
-                    Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                            Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
-                }
-            });
-        }else {
+                        }
+                    });
+                } else {
 
-            mFirebaseRef.changePassword(unprocessedEmail, oldPassword, newPassword, new Firebase.ResultHandler() {
-                @Override
-                public void onSuccess() {
-                    userRef.child(Constants.FIREBASE_PROPERTY_USER_HAS_LOGGED_IN_WITH_PASSWORD).setValue(true);
+                    mFirebaseRef.changePassword(unprocessedEmail, oldPassword, newPassword, new Firebase.ResultHandler() {
+                        @Override
+                        public void onSuccess() {
+                            userRef.child(Constants.FIREBASE_PROPERTY_USER_HAS_LOGGED_IN_WITH_PASSWORD).setValue(true);
                                         /* The password was changed */
-                    Log.d(LOG_TAG, getString(R.string.log_message_password_changed_successfully) + ":" + newPassword);
+                            Log.d(LOG_TAG, getString(R.string.log_message_password_changed_successfully) + ":" + newPassword);
 
                         /* Go to main activity */
-                    Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                }
+                            Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
 
-                @Override
-                public void onError(FirebaseError firebaseError) {
-                    Log.d(LOG_TAG, getString(R.string.log_error_failed_to_change_password) + firebaseError);
-                    mAuthProgressDialog.dismiss();
-                    showErrorToast(firebaseError.getMessage());
+                        @Override
+                        public void onError(FirebaseError firebaseError) {
+                            Log.d(LOG_TAG, getString(R.string.log_error_failed_to_change_password) + firebaseError);
+                            mAuthProgressDialog.dismiss();
+                            showErrorToast(firebaseError.getMessage());
 
                         /* Go to Login activity */
-                    Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                            Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
 
+                        }
+                    });
+                }
+            }
+                @Override
+                public void onCancelled (FirebaseError firebaseError){
+                    Log.e(LOG_TAG,
+                            getString(R.string.log_error_the_read_failed) +
+                                    firebaseError.getMessage());
                 }
             });
-        }
 
     }
 

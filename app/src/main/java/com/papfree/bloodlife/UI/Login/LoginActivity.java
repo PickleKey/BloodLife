@@ -309,70 +309,66 @@ public class LoginActivity extends BaseActivity {
         final Firebase userRef = new Firebase(Constants.FIREBASE_URL_USERS).child(mEncodedEmail);
         final Firebase orgRef = new Firebase(Constants.FIREBASE_URL_ORGS).child(mEncodedEmail);
 
-        if(orgRef != null){
-            orgRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    User user = dataSnapshot.getValue(User.class);
+        orgRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
 
-                    if (user != null) {
+                if (user != null) {
 
-                        /**
-                         * If recently registered user has hasLoggedInWithPassword = "false"
-                         * (never logged in using password provider)
-                         */
-                        if (!user.isHasLoggedInWithPassword()) {
+                    /**
+                     * If recently registered user has hasLoggedInWithPassword = "false"
+                     * (never logged in using password provider)
+                     */
+                    if (!user.isHasLoggedInWithPassword()) {
 
-                            Intent intent = new Intent(LoginActivity.this, ChangePasswordActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
-                        }
+                        Intent intent = new Intent(LoginActivity.this, ChangePasswordActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
                     }
-                }
+                } else {
+                    /**
+                     * Check if current user has logged in at least once
+                     */
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            User user = dataSnapshot.getValue(User.class);
 
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    Log.e(LOG_TAG,
-                            getString(R.string.log_error_the_read_failed) +
-                                    firebaseError.getMessage());
-                }
-            });
-        }else {
+                            if (user != null) {
 
-            /**
-             * Check if current user has logged in at least once
-             */
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    User user = dataSnapshot.getValue(User.class);
+                                /**
+                                 * If recently registered user has hasLoggedInWithPassword = "false"
+                                 * (never logged in using password provider)
+                                 */
+                                if (!user.isHasLoggedInWithPassword()) {
 
-                    if (user != null) {
-
-                        /**
-                         * If recently registered user has hasLoggedInWithPassword = "false"
-                         * (never logged in using password provider)
-                         */
-                        if (!user.isHasLoggedInWithPassword()) {
-
-                            Intent intent = new Intent(LoginActivity.this, ChangePasswordActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+                                    Intent intent = new Intent(LoginActivity.this, ChangePasswordActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
                         }
-                    }
-                }
 
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    Log.e(LOG_TAG,
-                            getString(R.string.log_error_the_read_failed) +
-                                    firebaseError.getMessage());
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                            Log.e(LOG_TAG,
+                                    getString(R.string.log_error_the_read_failed) +
+                                            firebaseError.getMessage());
+                        }
+                    });
                 }
-            });
-        }
+            }
 
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e(LOG_TAG,
+                        getString(R.string.log_error_the_read_failed) +
+                                firebaseError.getMessage());
+            }
+        });
     }
 
     /**
