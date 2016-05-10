@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords"
-                android:hint="Name" />
+                android:hint="Full Name" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Age Label -->
@@ -69,6 +69,17 @@
                 android:inputType="textEmailAddress"
                 android:hint="Email" />
         </android.support.design.widget.TextInputLayout>
+
+        <CheckBox
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/chk_terms"
+            android:layout_margin="8dp"
+            android:textColor="@color/white"
+            android:text="Agree terms and condition"
+            />
 
         <!-- Password Label -->
         <!--<android.support.design.widget.TextInputLayout

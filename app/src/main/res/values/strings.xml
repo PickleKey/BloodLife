@@ -11,6 +11,8 @@
 
     <!-- Menu Strings -->
     <string name="action_logout">Logout</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Instructions and Loading Text -->
     <string name="progress_dialog_loading">Loading…</string>

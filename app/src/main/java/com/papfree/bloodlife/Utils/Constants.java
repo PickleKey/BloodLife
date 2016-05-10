@@ -22,4 +22,9 @@ public final class Constants {
     public static final String PASSWORD_PROVIDER = "password";
     public static final String KEY_GOOGLE_EMAIL = "GOOGLE_EMAIL";
     public static final String PROVIDER_DATA_DISPLAY_NAME = "displayName";
+
+    //String Constants
+
+    public static final String NAME = "name";
+    public static final String EMAIL = "email";
 }

@@ -11,6 +11,7 @@
 
     <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+       <!-- <item name="android:windowTranslucentStatus">true</item>-->
         <item name="android:statusBarColor">@color/primary_darker</item>
 
         <item name="android:windowContentTransitions">true</item>
@@ -33,5 +34,8 @@
         <item name="colorButtonNormal">@color/primary_darker</item>
         <item name="android:colorButtonNormal">@color/primary_darker</item>
     </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
 </resources>

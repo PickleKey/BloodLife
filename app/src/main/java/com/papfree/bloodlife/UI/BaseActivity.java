@@ -132,13 +132,13 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     protected void logout() {
 
-                            /* Logout if mProvider is not null */
+        /* Logout if mProvider is not null */
         if (mProvider != null) {
             mFirebaseRef.unauth();
 
             if (mProvider.equals(Constants.GOOGLE_PROVIDER)) {
 
-                                            /* Logout from Google+ */
+                /* Logout from Google+ */
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                         new ResultCallback<Status>() {
                             @Override

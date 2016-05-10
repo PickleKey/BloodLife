@@ -52,6 +52,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.papfree.bloodlife.UI.Login.LoginActivity" />
         </activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="96da114f28d178fe27a3d7fd296f0440f3fb8270"
+            />
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
